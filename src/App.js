@@ -1,24 +1,32 @@
-import logo from './logo.svg';
+import React, {useEffect, useState} from 'react';
+import axios from 'axios' ; 
 import './App.css';
 
 function App() {
+  const [testGif, setTestGif] = useState('')
+  useEffect(()=>{
+    const fetchData = async() => {
+      const response = await axios('https://api.giphy.com/v1/gifs/trending', {
+        params: {
+          api_key: 'ESsAUgFexxjz2hL91zLmYdIUo2w6w8Fa',
+        }
+      }); 
+      //console.log(response.data.data);
+      setTestGif(response.data.data); 
+    }
+    fetchData(); 
+  },[]); 
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <React.Fragment>
+      {testGif.length > 0 && testGif.map(elem => {
+        return (
+          <div key={elem.id}>
+            <img src={elem.images.downsized.url} alt="this slowpoke moves"  width="250" />
+          </div>
+        ); 
+      }) }
+      
+    </React.Fragment>
   );
 }
 
